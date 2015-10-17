@@ -1,0 +1,6 @@
+SetHomeIntent set home
+SetHomeIntent set home mode
+SetHomeIntent home mode
+SetHomeIntent home
+
+HelpIntent help

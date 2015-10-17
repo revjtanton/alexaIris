@@ -1,0 +1,12 @@
+{
+  "intents": [
+    {
+      "intent": "SetHomeIntent",
+      "slots": []
+    },
+    {
+      "intent": "HelpIntent",
+      "slots": []
+    }
+  ]
+}
