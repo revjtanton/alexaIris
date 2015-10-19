@@ -5,6 +5,10 @@
       "slots": []
     },
     {
+      "intent": "EndIntent",
+      "slots": []
+    },
+    {
       "intent": "HelpIntent",
       "slots": []
     }
