@@ -36,8 +36,8 @@ IrisBridge.prototype.eventHandlers.onSessionStarted = function (sessionStartedRe
 
 IrisBridge.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
     console.log("IrisBridge onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "Success.  Please state your command.";
-    var repromptText = "You can say things like home mode, night mode, and more.";
+    var speechOutput = "Connected.  Please state your command.";
+    var repromptText = "You can say commands like home mode, night mode, and more.";
     response.ask(speechOutput, repromptText);
 };
 
@@ -50,10 +50,19 @@ IrisBridge.prototype.eventHandlers.onSessionEnded = function (sessionEndedReques
 IrisBridge.prototype.intentHandlers = {
     // register custom intent handlers
     SetHomeIntent: function (intent, session, response) {
-		IrisSkill.prototype.HomeMode(response);
+		IrisSkill.prototype.SetHome(function(result) {
+			var returnedData = result;
+			
+			if(returnedData.result === 'PROFILE_EXECUTED') {
+				response.ask("Completed.  Do you have another request?", "Completed.  Do you have another request?");
+			}
+		});
+    },
+    EndIntent: function (intent, session, response) {
+        response.tell("Disconnected from Iris.", "Disconnected from Iris.");
     },
     HelpIntent: function (intent, session, response) {
-        response.ask("You can say things like home mode, night mode, and more.", "You can say things like home mode, night mode, and more.");
+        response.ask("You can say commands like home mode, night mode, and more.", "You can say commands like home mode, night mode, and more.");
     }
 };
 

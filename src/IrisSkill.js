@@ -1,10 +1,4 @@
-/**
- * This is the meat of what connects to IrisConnect
- */
- 
-/**
- * Set your username and password
- */
+
 var USERNAME = '';
 var PASSWORD = '';
 
@@ -15,8 +9,7 @@ function IrisConnect() {
 	
 };
 
-// Setting HOME mode.
-IrisConnect.prototype.HomeMode = function(response) {
+IrisConnect.prototype.Login = function(callback) {
 		var post_data = querystring.stringify({
 			username: USERNAME,
 			password: PASSWORD,
@@ -38,33 +31,7 @@ IrisConnect.prototype.HomeMode = function(response) {
 			console.log(res.statusCode);
 			res.on('data', function(d) {
 				de = JSON.parse(d);
-				
-				var post_data = querystring.stringify({
-					profile: 'HOME'
-				});
-				
-				var options = {
-				  host: 'www.irissmarthome.com',
-				  port: 443,
-				  path: '/v5/users/' + USERNAME + '/hubs/only/profile',
-				  method: 'PUT',
-				  headers: {
-					  'Content-Type': 'application/x-www-form-urlencoded',
-					  'Content-Length': Buffer.byteLength(post_data),
-					  'cookie': 'ApiSession=' + de.ApiSession
-				  }
-				};
-				
-				var req = https.request(options, function(res) {
-					res.setEncoding('utf8');
-					console.log(res.statusCode);
-					res.on('data', function(d) {
-						//response.tell("Success.","Success.");
-						console.log(response);
-					});
-				});
-				req.write(post_data);
-				req.end();
+				callback(de.ApiSession);
 			});
 		});
 		req.write(post_data);
@@ -73,6 +40,43 @@ IrisConnect.prototype.HomeMode = function(response) {
 		req.on('error', function(e) {
 		  console.error(e);
 		});
+};
+
+IrisConnect.prototype.SetHome = function(callback) {
+	var a = IrisConnect.prototype.Login(function(result) {
+		ApiSession = result;
+		
+		var post_data = querystring.stringify({
+			profile: 'HOME'
+		});
+			
+		var options = {
+		  host: 'www.irissmarthome.com',
+		  port: 443,
+		  path: '/v5/users/' + USERNAME + '/hubs/only/profile',
+		  method: 'PUT',
+		  headers: {
+			  'Content-Type': 'application/x-www-form-urlencoded',
+			  'Content-Length': Buffer.byteLength(post_data),
+			  'cookie': 'ApiSession=' + ApiSession
+		  }
+		};
+
+		var req = https.request(options, function(res) {
+			res.setEncoding('utf8');
+			console.log(res.statusCode);
+			res.on('data', function(d) {
+				de = JSON.parse(d);
+				callback(de);
+			});
+		});
+		req.write(post_data);
+		req.end();
+
+		req.on('error', function(e) {
+		  console.error(e);
+		});
+	});
 };
 
 module.exports = IrisConnect;

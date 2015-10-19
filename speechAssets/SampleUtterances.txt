@@ -3,4 +3,11 @@ SetHomeIntent set home mode
 SetHomeIntent home mode
 SetHomeIntent home
 
+EndIntent no thanks
+EndIntent no thank you
+EndIntent no
+EndIntent nope
+EndIntent end bridge
+EndIntent end
+
 HelpIntent help
