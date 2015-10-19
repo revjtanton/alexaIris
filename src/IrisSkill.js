@@ -1,14 +1,20 @@
-
+/**
+ * Here we're setting some values for use later.  These are your Iris credentials and some stuff we're pulling in from Node
+ */
 var USERNAME = '';
 var PASSWORD = '';
 
 var https = require('https');
 var querystring = require('querystring');
 
+/**
+ * Declaring our IrisConnect
+ */
 function IrisConnect() {
 	
 };
 
+//This is the login portion.  This will return the ApiSession value for use with other requests.  
 IrisConnect.prototype.Login = function(callback) {
 		var post_data = querystring.stringify({
 			username: USERNAME,
@@ -42,6 +48,7 @@ IrisConnect.prototype.Login = function(callback) {
 		});
 };
 
+// This will set the HOME mode.  Change HOME to AWAY or NIGHT to set those.  
 IrisConnect.prototype.SetHome = function(callback) {
 	var a = IrisConnect.prototype.Login(function(result) {
 		ApiSession = result;
@@ -79,4 +86,5 @@ IrisConnect.prototype.SetHome = function(callback) {
 	});
 };
 
+// Exporting IrisConnect for use by index.js
 module.exports = IrisConnect;
